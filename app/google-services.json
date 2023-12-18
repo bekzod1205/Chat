@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "399009724312",
+    "project_id": "whatsapp-b8e2e",
+    "storage_bucket": "whatsapp-b8e2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399009724312:android:5b8d386baa043eed845ded",
+        "android_client_info": {
+          "package_name": "com.said.whatsapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEUyz_XbQVjUVnrCLQyt9YRHvABq6hSMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
