@@ -13,6 +13,11 @@
         android:theme="@style/Theme.WhatsApp"
         tools:targetApi="31">
         <activity
+            android:name=".screen.PersonalChat"
+            android:exported="false"
+            android:label="@string/title_activity_message"
+            android:theme="@style/Theme.WhatsApp" />
+        <activity
             android:name=".screen.Contacts"
             android:exported="false"
             android:label="@string/title_activity_contacts"

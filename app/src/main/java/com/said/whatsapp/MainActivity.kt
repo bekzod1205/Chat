@@ -11,7 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.said.whatsapp.screen.Contacts
 import com.said.whatsapp.screen.LogIn
+import com.said.whatsapp.screen.PersonalChat
 import com.said.whatsapp.ui.theme.WhatsAppTheme
 
 class MainActivity : ComponentActivity() {

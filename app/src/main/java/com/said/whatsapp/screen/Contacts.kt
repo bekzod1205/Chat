@@ -1,11 +1,14 @@
 package com.said.whatsapp.screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -104,86 +108,123 @@ class Contacts : ComponentActivity() {
             }
 
         })
-        Surface(color = Color.Cyan) {
-            Column(){
+        Surface(color = Color.White) {
+            Column() {
                 CenterAlignedTopAppBar(
-                    title = { Text(text = "Contacts", color = Color.White, fontWeight = FontWeight.Bold) },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = greeen),
-                    navigationIcon = { Icon(imageVector = Icons.Default.Menu, contentDescription = null, tint = Color.White, modifier = Modifier
-                        .padding(10.dp)
-                        .clickable { })
+                    title = {
+                        Text(
+                            text = "Contacts",
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
                     },
-                    actions = { Row {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = null, tint = Color.White, modifier = Modifier
-                            .padding(10.dp)
-                            .clickable { })
-                        Icon(imageVector = Icons.Default.Share, contentDescription = null, tint = Color.White, modifier = Modifier
-                            .padding(10.dp)
-                            .clickable { })
-                    }
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = greeen),
+                    navigationIcon = {
+                        Icon(imageVector = Icons.Default.Menu,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .clickable { })
+                    },
+                    actions = {
+                        Row {
+                            Icon(imageVector = Icons.Default.Search,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .clickable { })
+                            Icon(imageVector = Icons.Default.Share,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .clickable { })
+                        }
                     })
                 LazyColumn {
                     items(userList) {
-                        Card(
-                            shape = RoundedCornerShape(0.dp),
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(vertical = 0.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White)
-                        ) {
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp)
-                                    .clickable {
-//                            val i = Intent(
-//                                this,
-//                                MessageActivity::class.java
-//                            )
-//                            i.putExtra("uid", uid)
-//                            i.putExtra("useruid", it.uid)
-//                            startActivity(i)
-                                    },
-                                verticalAlignment = Alignment.CenterVertically
+                        Column(modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
                             ) {
-                                AsyncImage(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(R.drawable.img_1)
-                                        .crossfade(true)
-                                        .build(),
-                                    modifier = Modifier
-                                        .clip(CircleShape)
-                                        .height(45.dp)
-                                        .width(45.dp)
-                                        .border(width = 2.dp, color = greeen, shape = CircleShape),
-                                    placeholder = painterResource(R.drawable.img_1),
-                                    contentDescription = ("no image"),
-                                    contentScale = ContentScale.Crop,
+                            Card(
+                                shape = RoundedCornerShape(0.dp),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(vertical = 0.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color.White)
+                            ) {
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(10.dp)
+                                        .clickable {
+                                            val i = Intent(
+                                                this@Contacts,
+                                                PersonalChat::class.java
+                                            )
+                                            i.putExtra("uid_1", uid)
+                                            i.putExtra("user_uid", it.uid)
+                                            startActivity(i)
+                                        },
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    AsyncImage(
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(R.drawable.img_1)
+                                            .crossfade(true)
+                                            .build(),
+                                        modifier = Modifier
+                                            .clip(CircleShape)
+                                            .height(45.dp)
+                                            .width(45.dp)
+                                            .border(
+                                                width = 2.dp,
+                                                color = greeen,
+                                                shape = CircleShape
+                                            ),
+                                        placeholder = painterResource(R.drawable.img_1),
+                                        contentDescription = ("no image"),
+                                        contentScale = ContentScale.Crop,
 
-                                    colorFilter = ColorFilter.tint(greeen))
-                                Column {
-                                    Text(
-                                        text = it.username ?: "",
-                                        Modifier.padding(start = 12.dp),
-                                        fontSize = 22.sp,
-                                        fontFamily = FontFamily.Monospace,
+                                        colorFilter = ColorFilter.tint(greeen)
+                                    )
+                                    Column {
+                                        Text(
+                                            text = it.username ?: "",
+                                            Modifier.padding(start = 12.dp),
+                                            fontSize = 22.sp,
+                                            fontFamily = FontFamily.Monospace,
 //                                        color = Color.White
-                                    )
-                                    Text(
-                                        text = "Hi there ...",
-                                        Modifier.padding(start = 12.dp),
-                                        fontSize = 22.sp,
-                                        fontFamily = FontFamily.Cursive,
-                                        color = Color.Gray
-                                    )
-                                }
-                                Column (modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End ){
-                                    Spacer(modifier = Modifier.height(20.dp))
-                                    Text(text = "16:52", color = grey)
-                                }
+                                        )
+                                        Text(
+                                            text = "Hi there ...",
+                                            Modifier.padding(start = 12.dp),
+                                            fontSize = 22.sp,
+                                            fontFamily = FontFamily.Cursive,
+                                            color = Color.Gray
+                                        )
+                                    }
+                                    Column(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalAlignment = Alignment.End
+                                    ) {
+                                        Spacer(modifier = Modifier.height(20.dp))
+                                        Text(text = "16:52", color = grey)
+                                    }
 
+                                }
                             }
                         }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp)
+                                .height(1.dp)
+                                .background(color = Color.Gray)
+                        )
                     }
                 }
             }
