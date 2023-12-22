@@ -1,10 +1,30 @@
 {
   "project_info": {
     "project_number": "399009724312",
+    "firebase_url": "https://whatsapp-b8e2e-default-rtdb.firebaseio.com",
     "project_id": "whatsapp-b8e2e",
     "storage_bucket": "whatsapp-b8e2e.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399009724312:android:4558ca8a84727d62845ded",
+        "android_client_info": {
+          "package_name": "com.example.whatsup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEUyz_XbQVjUVnrCLQyt9YRHvABq6hSMI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:399009724312:android:5b8d386baa043eed845ded",

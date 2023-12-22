@@ -1,5 +1,6 @@
 package com.said.whatsapp.screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -51,16 +52,15 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import com.google.firebase.database.getValue
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.values
 import com.said.whatsapp.R
 import com.said.whatsapp.model.Message
 import com.said.whatsapp.model.User
 import com.said.whatsapp.screen.ui.theme.LightGreen
 import com.said.whatsapp.ui.theme.WhatsAppTheme
 
+
 class PersonalChat : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -69,151 +69,172 @@ class PersonalChat : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting2()
-                }
-            }
-        }
-    }
+                    val uid = intent.getStringExtra("uid_1")
+                    val user_id = intent.getStringExtra("user_uid")
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun Greeting2(modifier: Modifier = Modifier) {
-        val uid = intent.getStringExtra("uid_1")
-        val user_id = intent.getStringExtra("user_uid")
-        val messages = remember {
-            mutableStateListOf(Message())
-        }
-        val text = remember {
-            mutableStateOf("")
-        }
-
-        val reference = com.google.firebase.ktx.Firebase.database.reference
-            .child("users")
-            .child(uid!!)
-            .child("message")
-            .child(user_id!!)
-
-
-
-
-        reference.addValueEventListener(object : ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val children = snapshot.children
-                messages.clear()
-                children.forEach {
-                    val message = it.getValue(Message::class.java)
-                    messages.add(message ?: Message())
-                    Log.d("TAG", "onCreate: ${message?.text}")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("TAG", "onCancelled: ${error.message}")
-            }
-        })
-
-
-        val message = Message(uid, user_id, text.value, "15.12")
-        val reference_1 = Firebase.database.reference.child("users")
-        val key = reference_1.push().key.toString()
-        val key1 = reference_1.push().key.toString()
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(vertical = 10.dp)
-                    .fillMaxWidth()
-                    .height(50.dp)
-            )
-            {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        modifier = Modifier.padding(horizontal = 10.dp),
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = ""
-                    )
-                    Image(
-                        painter = painterResource(R.drawable.ic_launcher_background),
-                        contentDescription = "avatar",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                    )
-                    Text(
-                        text = "Ali",
-                        fontSize = 20.sp,
-                        modifier = Modifier.padding(start = 10.dp)
-                    )
-                }
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-                    .height(2.dp)
-                    .background(color = Color.Gray)
-            )
-            Box(modifier = Modifier.fillMaxSize()) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(bottom = 65.dp)
-                        .align(Alignment.BottomCenter)
-                ) {
-                    items(messages) {
-                        MessageRow(uid = uid.toString(), message = it)
+                    val name = remember {
+                        mutableStateOf("")
                     }
-                }
+                    val messages = remember {
+                        mutableStateListOf(Message())
+                    }
 
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    TextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        value = text.value,
-                        onValueChange = { newText ->
-                            text.value = newText
-                        },
-                        label = {
-                            Text(text = "Message")
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = {
-                                if (text.value != "") {
-                                    reference_1.child(uid)
-                                        .child("message")
-                                        .child(user_id)
-                                        .child(key)
-                                        .setValue(message)
-                                    reference_1.child(user_id)
-                                        .child("message")
-                                        .child(uid)
-                                        .child(key1)
-                                        .setValue(message)
-                                    text.value = ""
+                    val reference = Firebase.database.reference
+                        .child("users")
+                        .child(uid!!)
+                        .child("message")
+                        .child(user_id!!)
+
+                    reference.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val children = snapshot.children
+                            messages.clear()
+                            children.forEach {
+                                val message = it.getValue(Message::class.java)
+                                messages.add(message ?: Message())
+                                Log.d("tag1", "onDataChange: $messages")
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.d("TAG", "onCancelled: ${error.message}")
+                        }
+                    })
+
+
+                    val text = remember {
+                        mutableStateOf(TextFieldValue(""))
+                    }
+
+
+                    val reference_1 = Firebase.database.reference.child("users")
+                    val key = reference_1.push().key.toString()
+
+                    reference_1.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val children = snapshot.children
+                            children.forEach {
+                                val userr = it.getValue(User::class.java)
+                                if (userr?.uid == user_id) {
+                                    name.value = userr?.username!!
+                                    Log.d("TAG2", "Greeting2: $userr")
                                 }
-                            }) {
+                            }
+
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.d("TAG", "onCancelled: ${error.message}")
+                        }
+
+                    })
+
+
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .padding(vertical = 10.dp)
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        )
+                        {
+                            Row(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Icon(
-                                    imageVector = Icons.Default.Send,
+                                    modifier = Modifier.padding(horizontal = 10.dp),
+                                    imageVector = Icons.Default.ArrowBack,
                                     contentDescription = ""
                                 )
+                                Image(
+                                    painter = painterResource(R.drawable.ic_launcher_background),
+                                    contentDescription = "avatar",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                )
+                                Text(
+                                    text = name.value,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(start = 10.dp)
+                                )
                             }
-                        },
-                        maxLines = 3
-                    )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp)
+                                .height(2.dp)
+                                .background(color = Color.Gray)
+                        )
+                        Box(modifier = Modifier.fillMaxSize()) {
+
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(bottom = 65.dp)
+                                    .align(Alignment.BottomCenter)
+                            ) {
+                                items(messages) {
+                                    MessageRow(uid = uid.toString(), message = it)
+                                }
+                            }
+
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                                verticalArrangement = Arrangement.Bottom
+                            ) {
+                                TextField(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(),
+                                    value = text.value,
+                                    onValueChange = { newText ->
+                                        text.value = newText
+                                    },
+                                    label = {
+                                        Text(text = "Message")
+                                    },
+                                    trailingIcon = {
+                                        IconButton(onClick = {
+                                            if (text.value != TextFieldValue("")) {
+                                                val message =
+                                                    Message(uid, user_id, text.value.text, "15.12")
+                                                reference_1.child(uid!!)
+                                                    .child("message")
+                                                    .child(user_id!!)
+                                                    .child(key)
+                                                    .setValue(message)
+                                                reference_1.child(user_id)
+                                                    .child("message")
+                                                    .child(uid)
+                                                    .child(key)
+                                                    .setValue(message)
+                                                messages.add(message)
+                                                text.value = TextFieldValue("")
+                                            }
+                                        }) {
+                                            Icon(
+                                                imageVector = Icons.Default.Send,
+                                                contentDescription = ""
+                                            )
+                                        }
+                                    },
+                                    maxLines = 3
+                                )
+                            }
+                        }
+                    }
+
                 }
             }
         }
@@ -260,29 +281,4 @@ class PersonalChat : ComponentActivity() {
             }
         }
     }
-
-    fun getUser(uid: String): User? {
-        val reference = com.google.firebase.ktx.Firebase.database.reference.child("users")
-
-        var result: User? = null
-
-        reference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val children = snapshot.children
-                children.forEach {
-                    val user = it.getValue(User::class.java)
-                    if (user?.uid.toString() == uid) {
-                        result = user!!
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("TAG", "onCancelled: ${error.message}")
-            }
-
-        })
-        return result
-    }
-
 }

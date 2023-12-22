@@ -13,6 +13,21 @@
         android:theme="@style/Theme.WhatsApp"
         tools:targetApi="31">
         <activity
+            android:name=".screen.SearchActivity"
+            android:exported="false"
+            android:label="@string/title_activity_search"
+            android:theme="@style/Theme.WhatsApp" />
+        <activity
+            android:name=".screen.Chat"
+            android:exported="false"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/Theme.WhatsApp" />
+        <activity
+            android:name=".screen.ChatActivity"
+            android:exported="false"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/Theme.WhatsApp" />
+        <activity
             android:name=".screen.PersonalChat"
             android:exported="false"
             android:label="@string/title_activity_message"
